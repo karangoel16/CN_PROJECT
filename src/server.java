@@ -1,5 +1,5 @@
-package project;
 import java.io.*;
+//this store the client data
 import java.net.*;
 class client_data
 {
@@ -146,8 +146,9 @@ class server{
             					while(message.toUpperCase().startsWith("SENDTO"))
             						message = (String)client_class[client_no_].baseInputStream.readObject();
             					int i=Integer.parseInt(message);
-            					//check for correct i and then get things started
-            					if(i>client_no && client_class[i].clientSocket==null)
+            					System.out.println("check"+i);
+            					//check for correct i and then get things started this will also check if the client is trying to send over to itself
+            					if(i>client_no || client_class[i].clientSocket==null || i==client_no_)
             					{
             						sendMessage("INCORRECT CLIENT",client_class[client_no_].baseOutputStream);
             					}
@@ -161,7 +162,7 @@ class server{
             						sendMessage(message,client_class[i].baseOutputStream);
             						byte[] mybytearray=(byte[])client_class[client_no_].baseInputStream.readObject();//this is to get data
             						sendMessage(mybytearray,client_class[i].baseOutputStream); 
-            						//version 4 editting some of the minor components 
+            						//version 4 editing some of the minor components 
             						sendMessage("client "+client_no_+" sent a file",client_class[i].baseOutputStream);
             					}
             				}
@@ -183,10 +184,10 @@ class server{
                                 {
                     				//version 2.0 edit added to keep the information going in NULL clients
                     				if(client_class[i1].clientSocket!=null && i1!=i && i1!=client_no_)
-                    					sendMessage("Client "+client_no_+" sent:"+message,client_class[i1].baseOutputStream);
-                                
+                    					sendMessage("Client "+client_no_+" sent:"+message,client_class[i1].baseOutputStream); 
                                 }
             				}
+            				//this is used to file broadcasted 
             				if(message.toUpperCase().startsWith("FILE BROADCAST"))
             				{
             					String name,length;

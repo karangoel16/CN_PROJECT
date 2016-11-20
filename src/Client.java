@@ -1,13 +1,11 @@
-package project;
 import java.io.*;
 import java.net.*;
-
+//all the files have been included 
 public class Client {
 	private static Socket req;
 	private static ObjectOutputStream out;//for writing to the socket
-	private static ObjectInputStream in;
-	public static String username;
-	private static String message_input;
+	private static ObjectInputStream in;//for reading to the socket
+	private static String message_input;//for 
 	private static String message_output;
 	private static int port=8000;
 	public static String client_name;
@@ -56,7 +54,7 @@ public class Client {
 				{
 					message_input=(String)in.readObject();
 					//this is done to remove the commands from the screen to appear
-					if(!message_input.equals("FILE") && message_input.startsWith("CORRECT") && message_input.startsWith("INCORRECT"))
+					if(!message_input.equals("FILE") && !message_input.startsWith("CORRECT"))
 						System.out.println(message_input);
 					if(message_input.equals("FILE"))
 					{
@@ -76,8 +74,7 @@ public class Client {
 						bos.write(mybytearray, 0, mybytearray.length);
 						bos.close();
 						fos.close();
-						System.out.println("A file has been created");
-						System.out.println("");
+						System.out.println(myFile.getName()+" has been created");
 						
 					}
 					if(message_input=="EXIT")
@@ -145,7 +142,8 @@ public class Client {
 					if(message_output.toUpperCase().startsWith("SENDTO"))
 					{
 						System.out.println("Give me client's number");
-					    while(message_output.toUpperCase().equals("SENDTO") || message_input.toUpperCase().startsWith("CORRECT"))
+						message_input="";//message_input has been cleared
+					    while(message_output.toUpperCase().equals("SENDTO"))
 						{
 							message_output=buff.readLine();
 							sendmessage(message_output);
@@ -178,10 +176,6 @@ public class Client {
 									System.out.println("Enter the correct file path to be sent");
 								}
 							}
-					    }
-					    else
-					    {
-					    	System.out.println("Enter the correct client number");
 					    }
 					}
 					if(message_output.toUpperCase().startsWith("FILE BROADCAST"))
