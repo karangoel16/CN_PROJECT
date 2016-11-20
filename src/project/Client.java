@@ -2,7 +2,6 @@ package project;
 import java.io.*;
 import java.net.*;
 
-
 public class Client {
 	private static Socket req;
 	private static ObjectOutputStream out;//for writing to the socket
@@ -56,9 +55,10 @@ public class Client {
 				while(run)
 				{
 					message_input=(String)in.readObject();
-					if(!message_input.equals("FILE"))
+					//this is done to remove the commands from the screen to appear
+					if(!message_input.equals("FILE") && message_input.startsWith("CORRECT") && message_input.startsWith("INCORRECT"))
 						System.out.println(message_input);
-					else
+					if(message_input.equals("FILE"))
 					{
 						message_input=(String)in.readObject();
 						File myFile = new File (location+message_input);//this will create new file
@@ -77,6 +77,7 @@ public class Client {
 						bos.close();
 						fos.close();
 						System.out.println("A file has been created");
+						System.out.println("");
 						
 					}
 					if(message_input=="EXIT")
@@ -160,7 +161,7 @@ public class Client {
 								File myFile = new File (message_output);
 								if(myFile.exists())
 								{
-									sendmessage(myFile.getName());
+									sendmessage(myFile.getName());//this will send the name of the file to the different client
 									sendmessage(Integer.toString((int)myFile.length()));
 									byte [] mybytearray  = new byte [(int)myFile.length()];
 									fis = new FileInputStream(myFile);
@@ -172,8 +173,16 @@ public class Client {
 									fis.close();
 									break;
 								}
+								else
+								{
+									System.out.println("Enter the correct file path to be sent");
+								}
 							}
-					    }							
+					    }
+					    else
+					    {
+					    	System.out.println("Enter the correct client number");
+					    }
 					}
 					if(message_output.toUpperCase().startsWith("FILE BROADCAST"))
 					{
@@ -193,6 +202,10 @@ public class Client {
 							sendmessage(mybytearray);
 							bis.close();
 							fis.close();
+						}
+						else
+						{
+							System.out.println("Enter the correct file name");
 						}
 					}
 					if(message_output.toUpperCase().startsWith("EXIT"))		
@@ -222,6 +235,7 @@ public class Client {
 			}
 		}
 	};
+	//this is where main is called
 	public static void main(String[] args) throws Exception
 	{
 		BufferedReader buff=new BufferedReader(new InputStreamReader(System.in));
