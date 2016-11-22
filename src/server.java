@@ -3,6 +3,7 @@ import java.io.*;
 import java.net.*;
 class client_data
 {
+	//this is all the client elements needed by the server
 	private int client_no;
 	public Socket clientSocket=null;
 	public ObjectInputStream baseInputStream=null;

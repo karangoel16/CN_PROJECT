@@ -84,6 +84,11 @@ public class Client {
 					}
 				}
 			}
+			catch(java.net.SocketException ioe)
+			{
+				System.out.println("Server closed");
+				System.exit(0);
+			}
 			catch(IOException | ClassNotFoundException ioe)
 			{
 				ioe.printStackTrace();
@@ -255,11 +260,19 @@ public class Client {
 		System.out.println("Enter the location where you wanna store the file e.g.(C:\\localhost\\):");
 		location=buff.readLine();
 		//enter the location of the file
-		req=new Socket(add,port);
-		out=new ObjectOutputStream(req.getOutputStream());
-		out.flush();
-		in=new ObjectInputStream(req.getInputStream());
-		Handler_input.start();
-		Handler_output.start();
+		try{
+			req=new Socket(add,port);
+			out=new ObjectOutputStream(req.getOutputStream());
+			out.flush();
+			in=new ObjectInputStream(req.getInputStream());
+			Handler_input.start();
+			Handler_output.start();
+		}
+		//this is where we will check if the 
+		catch(java.net.ConnectException ioe)
+		{
+			System.out.println("Server not found");
+			System.exit(1);
+		}
 	}
 }
