@@ -31,6 +31,7 @@ public class Client {
 			ioe.printStackTrace();
 		}
 	}
+	//function overloading is used to send byte array or string 
 	static private void sendmessage(byte[] mybytearray)
 	{
 		try
@@ -43,6 +44,7 @@ public class Client {
 			ioe.printStackTrace();
 		}
 	}
+	//a thread has been created to listen to the server 
 	static Thread Handler_input=new Thread()
 	{
 		public void run()
@@ -56,6 +58,7 @@ public class Client {
 					//this is done to remove the commands from the screen to appear
 					if(!message_input.equals("FILE") && !message_input.startsWith("CORRECT"))
 						System.out.println(message_input);
+					//if the input from the server comes to be file then we will go into this loop to get file data from the server
 					if(message_input.equals("FILE"))
 					{
 						message_input=(String)in.readObject();
@@ -68,8 +71,6 @@ public class Client {
 						byte [] mybytearray  = new byte [Integer.parseInt(message_input)];
 						fos = new FileOutputStream(myFile);
 						bos=new BufferedOutputStream(fos);
-						//message_input=(String)in.readObject();
-						//bos.write(message_input.getBytes());
 						mybytearray=(byte[])in.readObject();
 						bos.write(mybytearray, 0, mybytearray.length);
 						bos.close();
@@ -105,6 +106,7 @@ public class Client {
 					System.out.println("MYUSER");
 					System.out.println("ACTIVEUSER");
 					System.out.println("BROADCAST");
+					System.out.println("UNICAST");
 					System.out.println("BLOCKCAST");
 					System.out.println("SENDTO");
 					System.out.println("FILE BROADCAST");
@@ -121,6 +123,23 @@ public class Client {
 						System.out.println("Enter the message you want to broadcast");
 						message_output=buff.readLine();
 						sendmessage(message_output);
+					}
+					//this part is used to send message to a particular client
+					if(message_output.toUpperCase().equals("UNICAST"))
+					{
+						System.out.println("Enter the client number whom you want to send message");
+						while(message_output.toUpperCase().equals("UNICAST"))
+						{
+							message_output=buff.readLine();
+							sendmessage(message_output);
+						}
+						Thread.sleep(1000);
+						if(!message_input.toUpperCase().startsWith("INCORRECT"))
+						{
+							System.out.println("Enter the message");
+							message_output=buff.readLine();
+							sendmessage(message_output);
+						}
 					}
 					if(message_output.toUpperCase().equals("BLOCKCAST"))
 					{

@@ -125,6 +125,25 @@ class server{
             						sendMessage(i+" "+client_class[i].clientSocket.getInetAddress().getHostName(),client_class[client_no_].baseOutputStream);
             					}	
             				} 
+            				if(message.toUpperCase().startsWith("UNICAST"))
+            				{
+            					while(message.toUpperCase().startsWith("UNICAST"))
+            					{
+            						message=(String)client_class[client_no_].baseInputStream.readObject();
+            					}
+            					int i=Integer.parseInt(message);
+            					System.out.println("Client"+i);
+            					if(i>client_no || client_class[i].clientSocket==null || i==client_no_)
+            					{
+            						sendMessage("INCORRECT CLIENT",client_class[client_no_].baseOutputStream);
+            					}
+            					else
+            					{
+            						sendMessage("CORRECT",client_class[client_no_].baseOutputStream);
+            						message = (String)client_class[client_no_].baseInputStream.readObject();
+            						sendMessage("Client "+client_no_+" sent:"+message,client_class[i].baseOutputStream);
+            					}
+            				}
             				if(message.toUpperCase().startsWith("BROADCAST"))
             				{
             					while(message.toUpperCase().startsWith("BROADCAST"))
@@ -146,7 +165,6 @@ class server{
             					while(message.toUpperCase().startsWith("SENDTO"))
             						message = (String)client_class[client_no_].baseInputStream.readObject();
             					int i=Integer.parseInt(message);
-            					System.out.println("check"+i);
             					//check for correct i and then get things started this will also check if the client is trying to send over to itself
             					if(i>client_no || client_class[i].clientSocket==null || i==client_no_)
             					{
