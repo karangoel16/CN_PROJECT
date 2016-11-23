@@ -50,7 +50,6 @@ class server{
 	//constructor
 	public server()
 	{
-		//client=new HashMap<Socket,String>();
 		client_class=new client_data[100];
 		for(int i=0;i<5;i++)
 		{
@@ -193,6 +192,7 @@ class server{
             					int i=Integer.parseInt(message);
             					if(i<=client_no && client_class[i].clientSocket!=null)
             					{
+            						
             						sendMessage("CORRECT CLIENT",client_class[client_no_].baseOutputStream);
             						message = (String)client_class[client_no_].baseInputStream.readObject();
                 					for (int i1=0;i1<=client_no;i1++) 
@@ -203,7 +203,9 @@ class server{
                                     }
             					}
             					else
+            					{
             						sendMessage("INCORRECT CLIENT",client_class[client_no_].baseOutputStream);
+            					}
             					//this is to tell the client that needs to be blockcasted is incorrect
             					//to change the string into an integer
             					//need to check it version 3.0
@@ -216,9 +218,7 @@ class server{
             					name=(String)client_class[client_no_].baseInputStream.readObject();//this is the length of the bytes to be sent
             					length=(String)client_class[client_no_].baseInputStream.readObject();
             					byte[] mybytearray=(byte[])client_class[client_no_].baseInputStream.readObject();//this is to get data
-            					System.out.println(name);
-            					System.out.println(length);
-        						//version 4 editting some of the minor components 
+        						//version 4 editing some of the minor components 
             					for (int i=0;i<=client_no;i++) 
                                 {
                     				//version 2.0 edit added to keep the information going in NULL clients
@@ -288,7 +288,13 @@ class server{
 	{
 		server s=new server();
 		//initiating class to get run the other functions
-		s.run();
+		try{
+			s.run();
+		}
+		catch(java.net.BindException ioe)
+		{
+			System.out.println("The Server is already running");
+		}
 		//running the other function
 	}
 }

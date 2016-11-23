@@ -5,9 +5,9 @@ public class Client {
 	private static Socket req;
 	private static ObjectOutputStream out;//for writing to the socket
 	private static ObjectInputStream in;//for reading to the socket
-	private static String message_input;//for 
-	private static String message_output;
-	private static int port=8000;
+	private static String message_input;//for sending the message to the server
+	private static String message_output;//for receiving message from the server
+	private static int port=8000;//this is for port number
 	public static String client_name;
 	private static String add="localhost";
 	private static String location;
@@ -102,6 +102,7 @@ public class Client {
 		{
 			try
 			{
+				message_input="";
 				BufferedReader buff=new BufferedReader(new InputStreamReader(System.in));
 				boolean run=true;
 				while(run)
@@ -149,11 +150,10 @@ public class Client {
 					if(message_output.toUpperCase().equals("BLOCKCAST"))
 					{
 						System.out.println("Enter the number of the client you do not want to send message");
-					    while(message_output.toUpperCase().equals("BLOCKCAST") || message_input.toUpperCase().startsWith("CORRECT"))
+					    while(message_output.toUpperCase().equals("BLOCKCAST"))
 						{
 							message_output=buff.readLine();
-							sendmessage(message_output);
-								
+							sendmessage(message_output);		
 						}
 					    Thread.sleep(1000);
 					    if(!message_input.toUpperCase().startsWith("INCORRECT"))
