@@ -192,19 +192,22 @@ class server{
             						message = (String)client_class[client_no_].baseInputStream.readObject();
             					int i=Integer.parseInt(message);
             					if(i<=client_no && client_class[i].clientSocket!=null)
+            					{
             						sendMessage("CORRECT CLIENT",client_class[client_no_].baseOutputStream);
+            						message = (String)client_class[client_no_].baseInputStream.readObject();
+                					for (int i1=0;i1<=client_no;i1++) 
+                                    {
+                        				//version 2.0 edit added to keep the information going in NULL clients
+                        				if(client_class[i1].clientSocket!=null && i1!=i && i1!=client_no_)
+                        					sendMessage("Client "+client_no_+" sent:"+message,client_class[i1].baseOutputStream); 
+                                    }
+            					}
             					else
             						sendMessage("INCORRECT CLIENT",client_class[client_no_].baseOutputStream);
             					//this is to tell the client that needs to be blockcasted is incorrect
             					//to change the string into an integer
             					//need to check it version 3.0
-            					message = (String)client_class[client_no_].baseInputStream.readObject();
-            					for (int i1=0;i1<=client_no;i1++) 
-                                {
-                    				//version 2.0 edit added to keep the information going in NULL clients
-                    				if(client_class[i1].clientSocket!=null && i1!=i && i1!=client_no_)
-                    					sendMessage("Client "+client_no_+" sent:"+message,client_class[i1].baseOutputStream); 
-                                }
+            					
             				}
             				//this is used to file broadcasted 
             				if(message.toUpperCase().startsWith("FILE BROADCAST"))
