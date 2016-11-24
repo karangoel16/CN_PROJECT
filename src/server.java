@@ -51,7 +51,7 @@ class server{
 	public server()
 	{
 		client_class=new client_data[100];
-		for(int i=0;i<10;i++)
+		for(int i=0;i<100;i++)
 		{
 			client_class[i]=new client_data();
 		}
