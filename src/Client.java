@@ -96,7 +96,7 @@ public class Client {
 		}
 	};
 	static Thread Handler_output=new Thread()
-	{	
+	{	//to suppress warning from the compiler on using depcrcated APIs
 		@SuppressWarnings("deprecation")
 		public void run()
 		{
@@ -118,7 +118,7 @@ public class Client {
 					System.out.println("FILE BROADCAST");
 					System.out.println("EXIT");
 					message_output = buff.readLine();//to read a message
-					sendmessage(message_output);
+					sendmessage(message_output); // to send it to the server
 					if(message_output.toUpperCase().equals("MYUSER"))
 					{
 						//do nothing output would come on the other thread
@@ -128,7 +128,7 @@ public class Client {
 						//version 2.0 to add the message to be sent in broadcast
 						System.out.println("Enter the message you want to broadcast");
 						message_output=buff.readLine();
-						sendmessage(message_output);
+						sendmessage(message_output); //calls the sendmessage class
 					}
 					//this part is used to send message to a particular client
 					if(message_output.toUpperCase().equals("UNICAST"))
@@ -140,6 +140,7 @@ public class Client {
 							sendmessage(message_output);
 						}
 						Thread.sleep(1000);
+						//if the server notifies that the client number is correct
 						if(!message_input.toUpperCase().startsWith("INCORRECT"))
 						{
 							System.out.println("Enter the message");
@@ -180,11 +181,12 @@ public class Client {
 							while(true)
 							{
 								message_output=buff.readLine();
-								File myFile = new File (message_output);
+								File myFile = new File (message_output); // creating an object of the mentioned file
+								//to check if the file exists or not
 								if(myFile.exists())
 								{
 									sendmessage(myFile.getName());//this will send the name of the file to the different client
-									sendmessage(Integer.toString((int)myFile.length()));
+									sendmessage(Integer.toString((int)myFile.length()));//this will send the length of the file
 									byte [] mybytearray  = new byte [(int)myFile.length()];
 									fis = new FileInputStream(myFile);
 									bis = new BufferedInputStream(fis);
