@@ -45,7 +45,6 @@ class server{
 	String message;
 	ObjectOutputStream out;//stream write to the socket
 	ObjectInputStream in;//stream read from the socket
-	//Map<Socket,String> client;
 	int client_no;
 	//constructor
 	public server()
@@ -62,7 +61,6 @@ class server{
         listener = new ServerSocket(port);
         while(true)
         {
-        	//
         	try
         	{
         		Socket temp=listener.accept();
