@@ -63,6 +63,7 @@ public class Client {
 					{
 						message_input=(String)in.readObject();
 						File myFile = new File (location+message_input);//this will create new file
+						myFile.getParentFile().mkdirs();//creates a path if it doesn't exist
 						if(!myFile.exists())
 						{
 							myFile.createNewFile();
