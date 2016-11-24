@@ -29,6 +29,7 @@ class client_data
 				baseOutputStream.close();
 				clientSocket.close();
 				clientSocket=null;
+				//close connections
 			}
 		}
 		catch(IOException ioe)
@@ -50,7 +51,7 @@ class server{
 	public server()
 	{
 		client_class=new client_data[100];
-		for(int i=0;i<5;i++)
+		for(int i=0;i<10;i++)
 		{
 			client_class[i]=new client_data();
 		}
@@ -58,7 +59,7 @@ class server{
 	}
     public void run() throws Exception
     {
-        listener = new ServerSocket(port);
+        listener = new ServerSocket(port);//creating a new listener socket
         while(true)
         {
         	try
@@ -67,14 +68,14 @@ class server{
         		if(temp!=null)
         		{
         			for(int i=0;i<100;i++)
-        			{
+        			{       //if the client socket is null then break
         				if(client_class[i].clientSocket==null)
         				{
         					client_no=i;
         					break;
         				}
-        			}
-        			client_class[client_no].setNum(client_no);
+        			} //if the client socket is not null
+        			client_class[client_no].setNum(client_no); //set the client number 
         			client_class[client_no].clientSocket=temp;
         			client_class[client_no].baseInputStream=new ObjectInputStream(client_class[client_no].clientSocket.getInputStream());
         			client_class[client_no].baseOutputStream=new ObjectOutputStream(client_class[client_no].clientSocket.getOutputStream());
@@ -109,11 +110,13 @@ class server{
             				//receive the message sent from the client
             				message = (String)client_class[client_no_].baseInputStream.readObject();
             				//System.out.println(message);
+					//to get its own client number
             				if(message.toUpperCase().equals("MYUSER"))
-            				{
+            				{//calls the class sendMessgae
             					sendMessage("Your Client number is "+client_no_,client_class[client_no_].baseOutputStream);
             				}
-            				if(message.toUpperCase().equals("ACTIVEUSER"))
+            				//to get the numbers of active clients
+					if(message.toUpperCase().equals("ACTIVEUSER"))
             				{
             					sendMessage("Active Users are:",client_class[client_no_].baseOutputStream);
             					sendMessage("Client No. Client Name:",client_class[client_no_].baseOutputStream);
@@ -123,13 +126,14 @@ class server{
             						sendMessage(i+" "+client_class[i].clientSocket.getInetAddress().getHostName(),client_class[client_no_].baseOutputStream);
             					}	
             				} 
+					//to send the message recieved from the client to the desired client
             				if(message.toUpperCase().startsWith("UNICAST"))
             				{
             					while(message.toUpperCase().startsWith("UNICAST"))
             					{
             						message=(String)client_class[client_no_].baseInputStream.readObject();
             					}
-            					int i=Integer.parseInt(message);
+            					int i=Integer.parseInt(message);//to get the client number
             					System.out.println("Client"+i);
             					if(i>client_no || client_class[i].clientSocket==null || i==client_no_)
             					{
@@ -142,6 +146,7 @@ class server{
             						sendMessage("Client "+client_no_+" sent:"+message,client_class[i].baseOutputStream);
             					}
             				}
+					//to send the message to all clients
             				if(message.toUpperCase().startsWith("BROADCAST"))
             				{
             					while(message.toUpperCase().startsWith("BROADCAST"))
@@ -158,6 +163,7 @@ class server{
                     					sendMessage("Client "+client_no_+" sent:"+message,client_class[i].baseOutputStream);
                                 }
             				}
+					//to send a file to a particular client
             				if(message.toUpperCase().startsWith("SENDTO"))
             				{
             					while(message.toUpperCase().startsWith("SENDTO"))
@@ -183,6 +189,7 @@ class server{
             					}
             				}
             				//Version 2.0 edit
+					//to send the message to all clients except one client
             				if(message.toUpperCase().startsWith("BLOCKCAST"))
             				{
             					while(message.toUpperCase().startsWith("BLOCKCAST"))
@@ -270,6 +277,7 @@ class server{
         			ioException.printStackTrace();
         		}
         	}
+		//this class will send message to the clients
         	public void sendMessage(byte[] msg,ObjectOutputStream out)
         	{
         		try{
