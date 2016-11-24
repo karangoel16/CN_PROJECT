@@ -97,7 +97,7 @@ public class Client {
 		}
 	};
 	static Thread Handler_output=new Thread()
-	{	//to suppress warning from the compiler on using depcrcated APIs
+	{	//to suppress warning from the compiler on using deprecated APIs
 		@SuppressWarnings("deprecation")
 		public void run()
 		{
