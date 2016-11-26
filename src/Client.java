@@ -1,9 +1,9 @@
 //****************************************************************//
-//                                                                //
+//This project/Code is original contribution by                   //
 //Student Team                                                    //
 //Pooja Shah - 1593-1401 (poojakshah@ufl.edu)                     //
 //Karan Goel - 8116-0185 (karangoel16@ufl.edu)                    //
-//                                                                //
+//for the master degree progam in University of Florida           //
 //Contributions:                                                  //
 //Pooja Shah - Testing and Threading                              //
 //Karan Goel - File Transfer and File Broadcast and error handling//
