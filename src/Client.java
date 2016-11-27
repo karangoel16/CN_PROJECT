@@ -219,24 +219,29 @@ public class Client {
 					{
 						//this is used to broadcast file to the entire network
 						System.out.println("Send the address of the file which you want to send");
-						message_output=buff.readLine();
-						File myFile = new File (message_output);
-						//to check if the file exists or not
-						if(myFile.exists())
+						
+						while(true)
 						{
-							sendmessage(myFile.getName());
-							sendmessage(Integer.toString((int)myFile.length()));
-							byte [] mybytearray  = new byte [(int)myFile.length()];
-							fis = new FileInputStream(myFile);
-							bis = new BufferedInputStream(fis);
-							bis.read(mybytearray,0,mybytearray.length);
-							sendmessage(mybytearray);
-							bis.close();
-							fis.close();
-						}
-						else
-						{
-							System.out.println("Enter the correct file name");
+							message_output=buff.readLine();
+							File myFile = new File (message_output);
+							//to check if the file exists or not
+							if(myFile.exists())
+							{
+								sendmessage(myFile.getName());
+								sendmessage(Integer.toString((int)myFile.length()));
+								byte [] mybytearray  = new byte [(int)myFile.length()];
+								fis = new FileInputStream(myFile);
+								bis = new BufferedInputStream(fis);
+								bis.read(mybytearray,0,mybytearray.length);
+								sendmessage(mybytearray);
+								bis.close();
+								fis.close();
+								break;
+							}
+							else
+							{
+								System.out.println("Incorrect file name");
+							}
 						}
 					}
 					if(message_output.toUpperCase().startsWith("EXIT"))		
