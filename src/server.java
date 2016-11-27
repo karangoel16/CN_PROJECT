@@ -251,6 +251,7 @@ class server{
             				if(message.toUpperCase().startsWith("EXIT"))
             				{
             					//this is to exit the client from the network
+            					sendMessage("PERFECT",client_class[client_no_].baseOutputStream);
             					client_class[client_no_].delete_client();
             					
             				}

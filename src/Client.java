@@ -247,6 +247,7 @@ public class Client {
 					if(message_output.toUpperCase().startsWith("EXIT"))		
 					{
 						sendmessage(message_output);
+						while(message_input.toUpperCase().startsWith("PERFECT"));
 						Handler_input.stop();
 						run=false;
 					}
