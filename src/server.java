@@ -9,6 +9,7 @@
 //Karan Goel - File Transfer and File Broadcast and error handling//
 //****************************************************************//
 import java.io.*;
+import java.util.Date;
 //this store the client data
 import java.net.*;
 class client_data
@@ -18,6 +19,8 @@ class client_data
 	public Socket clientSocket=null;
 	public ObjectInputStream baseInputStream=null;
 	public ObjectOutputStream baseOutputStream=null;
+	public int message_counter;
+	long time;
 	client_data()
 	{
 	}
@@ -39,6 +42,10 @@ class client_data
 				baseOutputStream.close();
 				clientSocket.close();
 				clientSocket=null;
+				message_counter=0;
+				Date date = new Date();
+		        //long timeInMilliSeconds = date.getTime();
+				time = date.getTime();
 				//close connections
 			}
 		}
@@ -119,6 +126,20 @@ class server{
             			{
             				//receive the message sent from the client
             				message = (String)client_class[client_no_].baseInputStream.readObject();
+            				Date date = new Date();
+            		        //long timeInMilliSeconds = date.getTime();
+            				long time = date.getTime();
+            				if(time-client_class[client_no_].time>=60000)
+            				{
+            					client_class[client_no_].message_counter=0;
+            					client_class[client_no_].time=time;
+            					//System.out.println("*");
+            				}
+            				client_class[client_no_].message_counter+=1;
+            				if(client_class[client_no_].message_counter>200)
+            				{
+            					sendMessage("Please wait for one minute to send message again",client_class[client_no_].baseOutputStream);
+            				}
             				//System.out.println(message);
 					//to get its own client number
             				if(message.toUpperCase().equals("MYUSER"))
